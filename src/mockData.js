@@ -1,4 +1,5 @@
-export default {
+
+const data = {
   "1": {
     name: "bulbasaur",
     id: 1,
@@ -146,3 +147,5 @@ export default {
     },
   },
 };
+
+export default data;

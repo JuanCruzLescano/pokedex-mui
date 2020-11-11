@@ -1,7 +1,6 @@
 import {Route, Switch} from 'react-router-dom'
 import Pokedex from './Pokedex'
 import Pokemon from './Pokemon'
-import './App.css'
 
 function App() {
   return (
