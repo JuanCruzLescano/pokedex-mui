@@ -1,28 +1,22 @@
 import {useState} from 'react'
 import {
-  AppBar,
   Card,
   CardContent,
   CardMedia,
   Typography,
   CircularProgress,
   Grid,
-  IconButton,
-  Toolbar,
 } from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
-import data from './mockData'
-import pokemonLogo from './pokemonLogo.svg'
-import toFirstCharUpperCase from './utils/toFirstCharUpperCase'
+import data from '../utils/mockData'
+import toFirstCharUpperCase from '../utils/toFirstCharUpperCase'
+import PokeSpinner from './PokeSpinner'
 
 const useStyles = makeStyles({
   pokemonGrid: {
     paddingTop: '20px',
     paddingRight: '50px',
     paddingLeft: '50px',
-  },
-  pokemonLogo: {
-    height: 40,
   },
   cardMedia: {
     width: 130,
@@ -37,7 +31,7 @@ const useStyles = makeStyles({
 const Pokedex = props => {
   const { history } = props
   const classes = useStyles()
-  const [pokemonData, setPokemonData] = useState(data)
+  const [pokemonData, setPokemonData] = useState()
 
   const getPokemonCard = pokemonId => {
     console.log(pokemonData[`${pokemonId}`])
@@ -59,23 +53,12 @@ const Pokedex = props => {
 
   return (
     <>
-      <AppBar color="primary" position="static">
-        <Toolbar>
-          <IconButton edge="start" href="/">
-            <img
-              src={pokemonLogo}
-              className={classes.pokemonLogo}
-              alt="pokemon_logo"
-            />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
       {pokemonData ? (
         <Grid container spacing={2} className={classes.pokemonGrid}>
           {Object.keys(pokemonData).map(pokemonId => getPokemonCard(pokemonId))}
         </Grid>
       ) : (
-        <CircularProgress />
+        <PokeSpinner />
       )}
     </>
   )

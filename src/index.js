@@ -4,7 +4,7 @@ import App from './App'
 import {Router} from 'react-router-dom'
 import {createBrowserHistory} from 'history'
 import {ThemeProvider} from '@material-ui/core/styles'
-import theme from './theme'
+import theme from '../src/utils/theme'
 
 const history = createBrowserHistory()
 

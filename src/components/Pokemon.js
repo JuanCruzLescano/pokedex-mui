@@ -1,8 +1,8 @@
 import {useState} from 'react'
-import data from './mockData'
 import {Typography, Link} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
-import toFirstCharUpperCase from './utils/toFirstCharUpperCase'
+import toFirstCharUpperCase from '../utils/toFirstCharUpperCase'
+import data from '../utils/mockData'
 
 const useStyles = makeStyles({
   fullImage: {
