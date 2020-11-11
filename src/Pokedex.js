@@ -1,45 +1,87 @@
-import { AppBar, Card, CardContent, Grid, IconButton, Toolbar } from "@material-ui/core";
-import { makeStyles } from '@material-ui/core/styles';
+import {useState} from 'react'
+import {
+  AppBar,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  CircularProgress,
+  Grid,
+  IconButton,
+  Toolbar,
+} from '@material-ui/core'
+import {makeStyles} from '@material-ui/core/styles'
+import data from './mockData'
 import pokemonLogo from './pokemonLogo.svg'
 
 const useStyles = makeStyles({
   pokemonGrid: {
     paddingTop: '20px',
     paddingRight: '50px',
-    paddingLeft: '50px'
+    paddingLeft: '50px',
   },
   pokemonLogo: {
-    height: 40
-  }
+    height: 40,
+  },
+  cardMedia: {
+    width: 130,
+    height: 130,
+    margin: 'auto',
+  },
+  cardContent: {
+    textAlign: 'center'
+  },
 })
 
-const getPokemonCard = () => {
-  return (
-    <Grid item xs={12} sm={4} lg={2}>
-      <Card>
-        <CardContent> HI </CardContent>
-      </Card>
-    </Grid>
-  )
-}
+const Pokedex = props => {
+  const { history } = props
+  const classes = useStyles()
+  const [pokemonData, setPokemonData] = useState(data)
 
+  const toFirstCharUpperCase = name => {
+    return name.charAt(0).toUpperCase() + name.slice(1)
+  }
 
-const Pokedex = () => {
-  const classes = useStyles();
+  const getPokemonCard = pokemonId => {
+    console.log(pokemonData[`${pokemonId}`])
+    const {id, name} = pokemonData[`${pokemonId}`]
+    const sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
+    return (
+      <Grid item xs={12} sm={6} lg={3} xl={2} key={pokemonId}>
+        <Card onClick={() => history.push(`/${pokemonId}`)}>
+          <CardMedia className={classes.cardMedia} image={sprite} />
+          <CardContent className={classes.cardContent}>
+            <Typography>
+              {`${id}. ${toFirstCharUpperCase(name)}`}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+    )
+  }
+
   return (
     <>
       <AppBar color="primary" position="static">
         <Toolbar>
-          <IconButton edge='start' href='/'>
-            <img src={pokemonLogo} className={classes.pokemonLogo} alt="pokemon_logo"/>
+          <IconButton edge="start" href="/">
+            <img
+              src={pokemonLogo}
+              className={classes.pokemonLogo}
+              alt="pokemon_logo"
+            />
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Grid container spacing={2} className={classes.pokemonGrid}>
-        {getPokemonCard()} 
-      </Grid>
+      {pokemonData ? (
+        <Grid container spacing={2} className={classes.pokemonGrid}>
+          {Object.keys(pokemonData).map(pokemonId => getPokemonCard(pokemonId))}
+        </Grid>
+      ) : (
+        <CircularProgress />
+      )}
     </>
   )
 }
 
-export default Pokedex;
+export default Pokedex
