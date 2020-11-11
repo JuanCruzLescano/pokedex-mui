@@ -13,6 +13,7 @@ import {
 import {makeStyles} from '@material-ui/core/styles'
 import data from './mockData'
 import pokemonLogo from './pokemonLogo.svg'
+import toFirstCharUpperCase from './utils/toFirstCharUpperCase'
 
 const useStyles = makeStyles({
   pokemonGrid: {
@@ -37,10 +38,6 @@ const Pokedex = props => {
   const { history } = props
   const classes = useStyles()
   const [pokemonData, setPokemonData] = useState(data)
-
-  const toFirstCharUpperCase = name => {
-    return name.charAt(0).toUpperCase() + name.slice(1)
-  }
 
   const getPokemonCard = pokemonId => {
     console.log(pokemonData[`${pokemonId}`])
