@@ -1,8 +1,10 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {Typography, Link} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import toFirstCharUpperCase from '../utils/toFirstCharUpperCase'
-import data from '../utils/mockData'
+import PokeSpinner from './PokeSpinner'
+import axios from 'axios';
+
 
 const useStyles = makeStyles({
   fullImage: {
@@ -15,7 +17,17 @@ const Pokemon = props => {
   const classes = useStyles()
   const {match} = props
   const {pokemonId} = match.params
-  const [pokemon, setPokemon] = useState(data[`${pokemonId}`])
+  const [pokemon, setPokemon] = useState(undefined)
+
+  useEffect(() => {
+    axios
+      .get(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
+      .then(response => {
+        const { data } = response
+        setPokemon(data)
+      })
+      .catch(err => setPokemon(false))
+  }, [pokemonId])
 
   const generatePokemonJSX = () => {
     const {name, id, species, height, weight, types, sprites} = pokemon
@@ -46,7 +58,13 @@ const Pokemon = props => {
       </>
     )
   }
-  return <>{generatePokemonJSX()}</>
+  return (
+    <>
+      {pokemon === undefined && <PokeSpinner />}
+      {pokemon !== undefined && pokemon && generatePokemonJSX(pokemon)}
+      {pokemon !== undefined && <Typography> Pokemon not found </Typography>}
+    </>
+  )
 }
 
 export default Pokemon
