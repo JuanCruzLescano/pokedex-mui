@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
-import {Typography, Link} from '@material-ui/core'
+import {Typography, Link, Button, IconButton} from '@material-ui/core'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {makeStyles} from '@material-ui/core/styles'
 import toFirstCharUpperCase from '../utils/toFirstCharUpperCase'
 import PokeSpinner from './PokeSpinner'
@@ -15,7 +16,7 @@ const useStyles = makeStyles({
 
 const Pokemon = props => {
   const classes = useStyles()
-  const {match} = props
+  const {match, history} = props
   const {pokemonId} = match.params
   const [pokemon, setPokemon] = useState(undefined)
 
@@ -26,7 +27,9 @@ const Pokemon = props => {
         const { data } = response
         setPokemon(data)
       })
-      .catch(err => setPokemon(false))
+      .catch(err => {
+        setPokemon(false)
+      })
   }, [pokemonId])
 
   const generatePokemonJSX = () => {
@@ -36,7 +39,7 @@ const Pokemon = props => {
     return (
       <>
         <Typography variant="h1">
-          {`${id}. ${toFirstCharUpperCase(name)}`}
+          {`${toFirstCharUpperCase(name)}`}
           <img src={front_default} alt={name} />
         </Typography>
         <img src={fullImageUrl} alt={name} className={classes.fullImage} />
@@ -54,7 +57,6 @@ const Pokemon = props => {
             return <Typography key={name}> {`${name}`} </Typography>
           })
         }
-
       </>
     )
   }
@@ -62,7 +64,12 @@ const Pokemon = props => {
     <>
       {pokemon === undefined && <PokeSpinner />}
       {pokemon !== undefined && pokemon && generatePokemonJSX(pokemon)}
-      {pokemon !== undefined && <Typography> Pokemon not found </Typography>}
+      {pokemon === false && <Typography> Pokemon not found </Typography>}
+      {pokemon !== undefined && (
+        <IconButton onClick={() => history.push('/')}>
+          <ArrowBackIcon />
+        </IconButton>
+      )}
     </>
   )
 }
